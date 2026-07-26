@@ -6,17 +6,16 @@
     <title>168光环民宿 | Aura Apartment</title>
     
     <style>
-        /* 基础设置与防漏底背景 */
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
             font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
             overflow: hidden;
-            background: #0f1419; 
+            /* 哪怕图片没加载出来，也是高级的深色渐变，绝非死黑 */
+            background: radial-gradient(circle at center, #2c3e50 0%, #0f1419 100%); 
         }
 
-        /* 强制全屏绝对定位，彻底解决边缘漏黑问题 */
         .slideshow {
             position: fixed;
             top: 0;
@@ -24,7 +23,6 @@
             width: 100vw;
             height: 100vh;
             z-index: -10;
-            background: #0f1419;
         }
 
         .bg-layer {
@@ -36,14 +34,9 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            transition: opacity 2.5s ease-in-out;
-            opacity: 0; 
         }
 
-        /* 可见状态 */
-        .bg-layer.visible { opacity: 1; }
-
-        /* 全屏压暗遮罩 */
+        /* 压暗遮罩 */
         .overlay {
             position: fixed;
             top: 0;
@@ -55,7 +48,6 @@
             pointer-events: none; 
         }
 
-        /* 内容排版：整体微微向上偏移，视觉重心更舒服 */
         .content {
             position: relative;
             z-index: 1;
@@ -68,7 +60,6 @@
             transform: translateY(-8vh); 
         }
 
-        /* 高级通透磨砂玻璃 + 微金边框 */
         .slogan-box {
             background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 100%);
             backdrop-filter: blur(20px);
@@ -105,7 +96,6 @@
             text-transform: uppercase;
         }
 
-        /* 底部模块 */
         .footer {
             position: absolute;
             bottom: 25px;
@@ -179,7 +169,7 @@
         .lang-en { font-size: 0.85rem; letter-spacing: 1px; opacity: 0.9; }
         .lang-ar { font-size: 0.95rem; opacity: 0.9; font-family: Arial, sans-serif; margin-top: 2px;}
 
-        /* WhatsApp 悬浮组件 */
+        /* WhatsApp */
         .wa-widget {
             position: fixed;
             bottom: 30px;
@@ -206,7 +196,6 @@
         .wa-icon:hover { transform: scale(1.1); }
         .wa-icon svg { width: 35px; height: 35px; fill: #fff; }
         
-        /* 完美重排的高级 WhatsApp 卡片 */
         .wa-tooltip {
             background: rgba(15, 20, 25, 0.95);
             padding: 22px;
@@ -236,7 +225,6 @@
         .wa-en { font-size: 0.82rem; color: #d0d0d0; line-height: 1.5; }
         .wa-ar { font-size: 1rem; color: #fff; line-height: 1.6; font-family: Arial, sans-serif; }
         
-        /* 极细金线分割 */
         .wa-divider {
             width: 40px;
             height: 1px;
@@ -244,7 +232,7 @@
             margin: 12px auto;
         }
 
-        /* 手机端屏幕完美适配 */
+        /* 手机端适配 */
         @media (max-width: 768px) {
             .content { transform: translateY(-5vh); }
             .slogan-box { padding: 40px 25px; }
@@ -271,8 +259,11 @@
 <body>
     <!-- 动态背景层 -->
     <div class="slideshow">
-        <div id="bg-layer-1" class="bg-layer"></div>
-        <div id="bg-layer-2" class="bg-layer"></div>
+        <!-- 【最核心修改：暴力破解！】
+             这里直接将第一张图片写死在 HTML 里，并且透明度直接为1。
+             浏览器不用等任何 JS，哪怕是在 2G 网络下，一打开网页就会立刻加载 1.jpg！ -->
+        <div id="bg-layer-1" class="bg-layer" style="background-image: url('images/1.jpg'); opacity: 1;"></div>
+        <div id="bg-layer-2" class="bg-layer" style="opacity: 0;"></div>
     </div>
     
     <!-- 全屏压暗遮罩 -->
@@ -302,7 +293,7 @@
         </div>
     </div>
 
-    <!-- WhatsApp 交互模块（完美对齐卡片） -->
+    <!-- WhatsApp -->
     <div class="wa-widget" onclick="handleWaClick(event)">
         <div id="wa-tooltip" class="wa-tooltip">
             <div class="wa-cn">约旦光环民宿，中国厨师做饭<br>费用包含一日三餐，点击了解详情。</div>
@@ -318,54 +309,54 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // --- 1. 生成 16 张随机图片数组 ---
             const totalGalleryImages = 168;
             let allImages = [];
-            for (let i = 1; i <= totalGalleryImages; i++) {
+            // 因为第 1 张图已经在 HTML 里写死了，这里我们从第 2 张图开始随机抽选 15 张
+            for (let i = 2; i <= totalGalleryImages; i++) {
                 allImages.push(i);
             }
 
-            // 洗牌算法打乱数组
+            // 洗牌打乱
             for (let i = allImages.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [allImages[i], allImages[j]] = [allImages[j], allImages[i]];
             }
 
-            const images = allImages.slice(0, 16).map(num => `images/${num}.jpg`);
+            const images = allImages.slice(0, 15).map(num => `images/${num}.jpg`);
 
             const layer1 = document.getElementById('bg-layer-1');
             const layer2 = document.getElementById('bg-layer-2');
             let isLayer1Active = true;
             let currentIndex = 0;
 
-            // --- 2. 暴力破解黑屏：立刻把第一张图挂上去，让浏览器原生加载，绝不等！ ---
-            layer1.style.backgroundImage = `url('${images[0]}')`;
-            layer1.classList.add('visible');
+            // 为了不在刚打开页面时闪烁，延迟 100 毫秒后再把动画属性加回去
+            setTimeout(() => {
+                layer1.style.transition = 'opacity 2.5s ease-in-out';
+                layer2.style.transition = 'opacity 2.5s ease-in-out';
+            }, 100);
 
-            // --- 3. 后续图片的轮播（放宽到 6 秒一换，给网络传输留时间） ---
+            // 每 6 秒轮播一次
             setInterval(() => {
-                const nextIndex = (currentIndex + 1) % images.length;
-                const nextImageUrl = images[nextIndex];
+                const nextImageUrl = images[currentIndex];
                 
-                // 这里的预加载只针对“下一张图”，确保切换时顺滑
                 const img = new Image();
                 img.onload = () => {
-                    currentIndex = nextIndex;
                     if (isLayer1Active) {
                         layer2.style.backgroundImage = `url('${nextImageUrl}')`;
-                        layer2.classList.add('visible');
-                        layer1.classList.remove('visible');
+                        layer2.style.opacity = '1';
+                        layer1.style.opacity = '0';
                     } else {
                         layer1.style.backgroundImage = `url('${nextImageUrl}')`;
-                        layer1.classList.add('visible');
-                        layer2.classList.remove('visible');
+                        layer1.style.opacity = '1';
+                        layer2.style.opacity = '0';
                     }
                     isLayer1Active = !isLayer1Active;
+                    currentIndex = (currentIndex + 1) % images.length;
                 };
                 img.src = nextImageUrl;
             }, 6000); 
 
-            // --- 4. WhatsApp 双击触发逻辑 ---
+            // WhatsApp 交互逻辑
             let waClickCount = 0;
             let waResetTimer;
 
@@ -397,7 +388,7 @@
             });
         });
 
-        // --- 5. 邮箱一键复制功能 ---
+        // 邮箱复制逻辑
         function copyEmail() {
             const email = "168support@168aura.com";
             navigator.clipboard.writeText(email).then(() => {
