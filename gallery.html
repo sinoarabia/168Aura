@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>168 Aura Gallery | 光环图集</title>
+    <style>
+        /* 基础设置与暗黑高级主题 */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        /* 顶部导航栏 */
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(to bottom, rgba(26,26,26,1) 0%, rgba(26,26,26,0) 100%);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2rem;
+            letter-spacing: 3px;
+            color: #ffffff;
+        }
+        .header p {
+            margin: 10px 0 0 0;
+            font-size: 0.9rem;
+            color: #f8ca55; /* 暗金色点缀 */
+        }
+        .back-btn {
+            position: absolute;
+            left: 20px;
+            top: 45px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 5px 15px;
+            border-radius: 20px;
+            transition: 0.3s;
+        }
+        .back-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* 核心：纯 CSS 瀑布流容器 */
+        .gallery-container {
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+            /* 响应式列数控制 */
+            column-count: 4; 
+            column-gap: 20px;
+        }
+
+        /* 图片单元格 */
+        .gallery-item {
+            break-inside: avoid; /* 防止图片被跨列截断 */
+            margin-bottom: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+        }
+        .gallery-item img {
+            width: 100%;
+            display: block;
+            background-color: #2a2a2a; /* 加载前的占位底色 */
+        }
+
+        /* 全屏放大弹窗 (Lightbox) */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90vh;
+            border-radius: 4px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px; right: 30px;
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 1024px) { .gallery-container { column-count: 3; } }
+        @media (max-width: 768px) { .gallery-container { column-count: 2; column-gap: 10px; padding: 10px; } .gallery-item { margin-bottom: 10px; } }
+        @media (max-width: 480px) { .gallery-container { column-count: 1; } }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部导航 -->
+    <div class="header">
+        <a href="index.html" class="back-btn">← 返回首页</a>
+        <h1>168 AURA GALLERY</h1>
+        <p>光环民宿 · 约旦首选</p>
+    </div>
+
+    <!-- 瀑布流图片容器 -->
+    <div class="gallery-container" id="gallery">
+        <!-- JS 会在这里自动生成 168 张图片 -->
+    </div>
+
+    <!-- 图片放大弹窗 -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" onclick="closeLightbox()">×</span>
+        <img id="lightbox-img" src="" alt="Aura Gallery Zoom">
+    </div>
+
+    <script>
+        // 配置：图片总数
+        const totalImages = 168;
+        // 配置：图片所在的文件夹路径（假设你在仓库里建了一个叫 images 的文件夹）
+        // 测试阶段，我先用随机测试图库替代，方便你立刻看到效果。
+        // 等你自己上传图片后，把下面这行改为 const imagePath = './images/';
+        const isTesting = true; 
+
+        const gallery = document.getElementById('gallery');
+
+        // 自动循环生成 168 张图
+        for (let i = 1; i <= totalImages; i++) {
+            // 真实使用时，图片命名为 1.jpg, 2.jpg ... 168.jpg
+            let imgSrc = isTesting ? `https://picsum.photos/400/${Math.floor(Math.random() * 300 + 300)}?random=${i}` : `./images/${i}.jpg`;
+            
+            let item = document.createElement('div');
+            item.className = 'gallery-item';
+            item.onclick = () => openLightbox(imgSrc); // 绑定点击放大事件
+
+            let img = document.createElement('img');
+            img.src = imgSrc;
+            img.alt = 'Aura Apartment Image ' + i;
+            // 【核心优化】原生懒加载：只有滑到屏幕附近时才下载图片，保证 168 张图绝不卡顿
+            img.loading = 'lazy'; 
+
+            item.appendChild(img);
+            gallery.appendChild(item);
+        }
+
+        // 弹窗交互逻辑
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+
+        function openLightbox(src) {
+            lightboxImg.src = src;
+            lightbox.style.display = 'flex';
+        }
+
+        function closeLightbox() {
+            lightbox.style.display = 'none';
+        }
+
+        // 点击空白处也能关闭弹窗
+        lightbox.onclick = function(e) {
+            if (e.target !== lightboxImg) {
+                closeLightbox();
+            }
+        }
+    </script>
+</body>
+</html>
