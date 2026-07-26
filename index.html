@@ -3,10 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>光环公寓 | Aura Apartment</title>
+    <title>光环民宿 | Aura Apartment</title>
     
-    <!-- 优化 2：预加载第一张图，优先请求图片资源 -->
-    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1585123334904-8452a641a47b?auto=format&fit=crop&w=1920&q=80">
+    <!-- 强制浏览器预下载5张顶级大图，确保零闪烁秒开 -->
+    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1585123334904-8452a641a47b?auto=format&fit=crop&w=1920&q=80"> <!-- 安曼 -->
+    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1541410965313-d53b3c16ef17?auto=format&fit=crop&w=1920&q=80"> <!-- 佩特拉 -->
+    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1507501336603-6e31db2be093?auto=format&fit=crop&w=1920&q=80"> <!-- 瓦迪拉姆 -->
+    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1621213442111-e1291b5825ac?auto=format&fit=crop&w=1920&q=80"> <!-- 死海 -->
+    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1579705745811-a32bef7856a3?auto=format&fit=crop&w=1920&q=80"> <!-- 杰拉什 -->
     
     <style>
         /* 基础设置 */
@@ -15,36 +19,66 @@
             padding: 0;
             height: 100%;
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            overflow: hidden; /* 防止出现滚动条 */
+            overflow: hidden;
+            background-color: #1a1a1a; 
         }
 
-        /* 动态背景图拼接与轮播 */
-        .bg-slider {
+        /* 绝对无瑕疵的图层叠加轮播系统 */
+        .slideshow {
             position: fixed;
             width: 100%;
             height: 100%;
             z-index: -1;
-            background-color: #2a3439; /* 优化 1：高级深蓝灰底色，防止网络慢时出现浅灰色 */
-            background-position: center;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
             background-size: cover;
-            background-repeat: no-repeat;
-            /* 24秒一轮的背景渐变动画 */
-            animation: bg-change 24s infinite alternate;
+            background-position: center;
+            opacity: 0;
+            /* 5张图，每张展示6秒，总周期30秒 */
+            animation: crossFade 30s infinite;
         }
 
-        /* 预设的高清图，等你拍了实景图，把下面的 url() 里换成 './你的图片名.jpg' 即可 */
-        @keyframes bg-change {
-            0% { background-image: url('https://images.unsplash.com/photo-1585123334904-8452a641a47b?auto=format&fit=crop&w=1920&q=80'); }
-            50% { background-image: url('https://images.unsplash.com/photo-1541410965313-d53b3c16ef17?auto=format&fit=crop&w=1920&q=80'); }
-            100% { background-image: url('https://images.unsplash.com/photo-1507501336603-6e31db2be093?auto=format&fit=crop&w=1920&q=80'); }
+        /* 5张约旦风情图库 & 精确的时间差拨片 */
+        .slide-1 { 
+            background-image: url('https://images.unsplash.com/photo-1585123334904-8452a641a47b?auto=format&fit=crop&w=1920&q=80'); 
+            animation-delay: 0s; 
+        }
+        .slide-2 { 
+            background-image: url('https://images.unsplash.com/photo-1541410965313-d53b3c16ef17?auto=format&fit=crop&w=1920&q=80'); 
+            animation-delay: 6s; 
+        }
+        .slide-3 { 
+            background-image: url('https://images.unsplash.com/photo-1507501336603-6e31db2be093?auto=format&fit=crop&w=1920&q=80'); 
+            animation-delay: 12s; 
+        }
+        .slide-4 { 
+            background-image: url('https://images.unsplash.com/photo-1621213442111-e1291b5825ac?auto=format&fit=crop&w=1920&q=80'); 
+            animation-delay: 18s; 
+        }
+        .slide-5 { 
+            background-image: url('https://images.unsplash.com/photo-1579705745811-a32bef7856a3?auto=format&fit=crop&w=1920&q=80'); 
+            animation-delay: 24s; 
         }
 
-        /* 黑色半透明遮罩，保证文字在复杂背景下依然清晰可读 */
+        /* 5图渐变算法（30秒周期，20%为一个阶段） */
+        @keyframes crossFade {
+            0%   { opacity: 0; }
+            6%   { opacity: 1; }
+            20%  { opacity: 1; }
+            26%  { opacity: 0; }
+            100% { opacity: 0; }
+        }
+
+        /* 黑色半透明遮罩 */
         .overlay {
             position: fixed;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.45);
             z-index: 0;
         }
 
@@ -60,65 +94,80 @@
             text-align: center;
         }
 
-        /* 高级毛玻璃面板 & 悬浮跳动动画 */
+        /* 高级毛玻璃面板 & 悬浮动画 */
         .slogan-box {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             padding: 50px 80px;
             border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            /* 悬浮动画：4秒一个周期，平滑起伏 */
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.4);
             animation: float 4s ease-in-out infinite;
         }
 
         @keyframes float {
             0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
+            50% { transform: translateY(-12px); }
             100% { transform: translateY(0px); }
         }
 
-        /* 中英文排版 */
+        /* 核心文案排版 */
         .cn-slogan {
             font-size: 3.5rem;
             color: #ffffff;
             font-weight: bold;
             margin-bottom: 15px;
             letter-spacing: 4px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
         }
 
         .en-slogan {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             color: #e0e0e0;
             letter-spacing: 2px;
             font-weight: 300;
         }
 
-        /* 底部联系方式 */
+        /* 底部联系方式及品牌强化（已去除 WhatsApp） */
         .footer {
             position: absolute;
             bottom: 30px;
             color: #ffffff;
             font-size: 1rem;
             letter-spacing: 1.5px;
-            opacity: 0.85;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            opacity: 0.9;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+            line-height: 1.8;
+        }
+        
+        .footer-highlight {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #f8ca55; /* 奢华暗金色 */
         }
 
         /* 移动端屏幕适配 */
         @media (max-width: 768px) {
-            .slogan-box { padding: 40px 30px; }
+            .slogan-box { padding: 40px 25px; }
             .cn-slogan { font-size: 2.2rem; }
             .en-slogan { font-size: 1.1rem; }
-            .footer { font-size: 0.8rem; bottom: 20px; }
+            .footer { font-size: 0.9rem; bottom: 20px; }
+            .footer-highlight { font-size: 1.1rem; }
         }
     </style>
 </head>
 <body>
-    <!-- 动态背景 -->
-    <div class="bg-slider"></div>
+    <!-- 5层图片叠加无缝轮播 -->
+    <div class="slideshow">
+        <div class="slide slide-1"></div>
+        <div class="slide slide-2"></div>
+        <div class="slide slide-3"></div>
+        <div class="slide slide-4"></div>
+        <div class="slide slide-5"></div>
+    </div>
+    
+    <!-- 压暗遮罩 -->
     <div class="overlay"></div>
 
     <!-- 核心文字区 -->
@@ -128,9 +177,10 @@
             <div class="en-slogan">Living in Jordan, with an Aura.</div>
         </div>
         
-        <!-- 页脚联系方式 -->
+        <!-- 更新后的精简页脚 -->
         <div class="footer">
-            Aura Apartment | WhatsApp: +962 7711 28288 | 168support@168aura.com
+            <span class="footer-highlight">光环民宿，约旦首选。</span><br>
+            168support@168aura.com
         </div>
     </div>
 </body>
