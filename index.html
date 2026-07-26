@@ -37,9 +37,10 @@
             background-position: center;
             background-repeat: no-repeat;
             transition: opacity 2.5s ease-in-out;
-            opacity: 0; /* 默认隐藏，等待 JS 确认加载完毕后再淡入 */
+            opacity: 0; 
         }
 
+        /* 可见状态 */
         .bg-layer.visible { opacity: 1; }
 
         /* 全屏压暗遮罩 */
@@ -51,7 +52,7 @@
             height: 100vh;
             background: rgba(0, 0, 0, 0.35);
             z-index: 0;
-            pointer-events: none; /* 防止遮挡底部元素的点击 */
+            pointer-events: none; 
         }
 
         /* 内容排版：整体微微向上偏移，视觉重心更舒服 */
@@ -301,7 +302,7 @@
         </div>
     </div>
 
-    <!-- WhatsApp 交互模块（重构版完美对齐卡片） -->
+    <!-- WhatsApp 交互模块（完美对齐卡片） -->
     <div class="wa-widget" onclick="handleWaClick(event)">
         <div id="wa-tooltip" class="wa-tooltip">
             <div class="wa-cn">约旦光环民宿，中国厨师做饭<br>费用包含一日三餐，点击了解详情。</div>
@@ -317,10 +318,8 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // --- 1. 从 168 张图集中随机抽取 16 张作为背景 ---
+            // --- 1. 生成 16 张随机图片数组 ---
             const totalGalleryImages = 168;
-            const requiredImages = 16;
-            
             let allImages = [];
             for (let i = 1; i <= totalGalleryImages; i++) {
                 allImages.push(i);
@@ -332,35 +331,26 @@
                 [allImages[i], allImages[j]] = [allImages[j], allImages[i]];
             }
 
-            const images = allImages.slice(0, requiredImages).map(num => `images/${num}.jpg`);
+            const images = allImages.slice(0, 16).map(num => `images/${num}.jpg`);
 
-            // --- 2. 彻底消灭黑屏的【智能图片预加载引擎】 ---
             const layer1 = document.getElementById('bg-layer-1');
             const layer2 = document.getElementById('bg-layer-2');
             let isLayer1Active = true;
             let currentIndex = 0;
 
-            // 初始加载第一张：只有确认完全下载成功，才展示它！
-            const initImg = new Image();
-            initImg.onload = () => {
-                layer1.style.backgroundImage = `url('${images[0]}')`;
-                layer1.classList.add('visible');
-            };
-            initImg.onerror = () => {
-                // 如果第一张图恰好损坏或缺失，立刻静默切换下一张，绝不黑屏报错
-                currentIndex++;
-                initImg.src = images[currentIndex % images.length];
-            };
-            initImg.src = images[0];
+            // --- 2. 暴力破解黑屏：立刻把第一张图挂上去，让浏览器原生加载，绝不等！ ---
+            layer1.style.backgroundImage = `url('${images[0]}')`;
+            layer1.classList.add('visible');
 
-            // 循环轮播逻辑
-            function loadNextImage() {
+            // --- 3. 后续图片的轮播（放宽到 6 秒一换，给网络传输留时间） ---
+            setInterval(() => {
                 const nextIndex = (currentIndex + 1) % images.length;
                 const nextImageUrl = images[nextIndex];
                 
+                // 这里的预加载只针对“下一张图”，确保切换时顺滑
                 const img = new Image();
                 img.onload = () => {
-                    currentIndex = nextIndex; // 成功加载后才更新索引
+                    currentIndex = nextIndex;
                     if (isLayer1Active) {
                         layer2.style.backgroundImage = `url('${nextImageUrl}')`;
                         layer2.classList.add('visible');
@@ -372,17 +362,10 @@
                     }
                     isLayer1Active = !isLayer1Active;
                 };
-                img.onerror = () => {
-                    // 如果轮播过程某图丢失，直接跳过它
-                    currentIndex = nextIndex; 
-                };
                 img.src = nextImageUrl;
-            }
+            }, 6000); 
 
-            // 每隔 5 秒执行一次智能加载
-            setInterval(loadNextImage, 5000);
-
-            // --- 3. WhatsApp 双击触发逻辑 ---
+            // --- 4. WhatsApp 双击触发逻辑 ---
             let waClickCount = 0;
             let waResetTimer;
 
@@ -414,7 +397,7 @@
             });
         });
 
-        // --- 4. 邮箱一键复制功能 ---
+        // --- 5. 邮箱一键复制功能 ---
         function copyEmail() {
             const email = "168support@168aura.com";
             navigator.clipboard.writeText(email).then(() => {
