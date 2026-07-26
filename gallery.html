@@ -12,7 +12,7 @@
             padding: 0; 
             background: #0f1419; 
             color: #fff; 
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
+            font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif; 
         }
 
         /* 顶部导航毛玻璃效果 */
@@ -33,6 +33,7 @@
             color: #f8ca55; 
             letter-spacing: 3px; 
             font-size: 1.8rem;
+            font-family: 'Optima', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         .back-btn { 
@@ -85,12 +86,30 @@
             padding: 40px 20px 60px 20px;
             color: #f8ca55;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.9);
-            line-height: 1.6;
+            line-height: 1.8;
         }
         
-        .gallery-footer .lang-cn { font-weight: bold; font-size: 1.2rem; letter-spacing: 2px; }
-        .gallery-footer .lang-en { font-size: 0.95rem; letter-spacing: 1px; opacity: 0.9; }
-        .gallery-footer .lang-ar { font-size: 1.1rem; opacity: 0.9; font-family: Arial, sans-serif; margin-top: 5px; }
+        /* 优化中文排版 */
+        .gallery-footer .lang-cn { 
+            font-family: 'Noto Serif SC', 'Songti SC', 'STSong', 'Microsoft YaHei', serif;
+            font-weight: 600; 
+            font-size: 1.25rem; 
+            letter-spacing: 2px; 
+        }
+        
+        .gallery-footer .lang-en { 
+            font-size: 0.95rem; 
+            letter-spacing: 1px; 
+            opacity: 0.9; 
+            margin-top: 5px;
+        }
+        
+        .gallery-footer .lang-ar { 
+            font-size: 1.1rem; 
+            opacity: 0.9; 
+            font-family: Arial, sans-serif; 
+            margin-top: 8px; 
+        }
 
         /* 沉浸式大图查看器 (Lightbox) */
         .lightbox { 
@@ -157,7 +176,7 @@
             .next-btn { right: 5px; }
             .close-btn { top: 10px; right: 20px; font-size: 35px; }
             .gallery-footer { padding: 30px 15px 40px 15px; }
-            .gallery-footer .lang-cn { font-size: 1rem; }
+            .gallery-footer .lang-cn { font-size: 1.05rem; }
             .gallery-footer .lang-en { font-size: 0.85rem; }
             .gallery-footer .lang-ar { font-size: 0.95rem; }
         }
@@ -175,9 +194,9 @@
     
     <!-- 底部三语模块（排在所有图集之后） -->
     <div class="gallery-footer">
-        <div class="lang-cn">你的画册在这里</div>
-        <div class="lang-en">Your album is here.</div>
-        <div class="lang-ar" dir="rtl">ألبومك هنا.</div>
+        <div class="lang-cn">您自己拍的美景也可以在这里……</div>
+        <div class="lang-en">The beautiful scenery you capture can also be here...</div>
+        <div class="lang-ar" dir="rtl">المناظر الجميلة التي تلتقطها بنفسك يمكن أن تكون هنا أيضاً...</div>
     </div>
 
     <!-- 大图查看器组件 -->
