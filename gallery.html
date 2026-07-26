@@ -79,6 +79,19 @@
             z-index: 1;
         }
 
+        /* 底部三语文字模块 */
+        .gallery-footer {
+            text-align: center;
+            padding: 40px 20px 60px 20px;
+            color: #f8ca55;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.9);
+            line-height: 1.6;
+        }
+        
+        .gallery-footer .lang-cn { font-weight: bold; font-size: 1.2rem; letter-spacing: 2px; }
+        .gallery-footer .lang-en { font-size: 0.95rem; letter-spacing: 1px; opacity: 0.9; }
+        .gallery-footer .lang-ar { font-size: 1.1rem; opacity: 0.9; font-family: Arial, sans-serif; margin-top: 5px; }
+
         /* 沉浸式大图查看器 (Lightbox) */
         .lightbox { 
             position: fixed; 
@@ -143,6 +156,10 @@
             .prev-btn { left: 5px; }
             .next-btn { right: 5px; }
             .close-btn { top: 10px; right: 20px; font-size: 35px; }
+            .gallery-footer { padding: 30px 15px 40px 15px; }
+            .gallery-footer .lang-cn { font-size: 1rem; }
+            .gallery-footer .lang-en { font-size: 0.85rem; }
+            .gallery-footer .lang-ar { font-size: 0.95rem; }
         }
     </style>
 </head>
@@ -155,6 +172,13 @@
 
     <!-- 动态注入图片的容器 -->
     <div class="gallery-container" id="gallery"></div>
+    
+    <!-- 底部三语模块（排在所有图集之后） -->
+    <div class="gallery-footer">
+        <div class="lang-cn">你的画册在这里</div>
+        <div class="lang-en">Your album is here.</div>
+        <div class="lang-ar" dir="rtl">ألبومك هنا.</div>
+    </div>
 
     <!-- 大图查看器组件 -->
     <div class="lightbox" id="lightbox">
