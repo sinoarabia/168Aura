@@ -3,8 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>光环民宿 | Aura Apartment</title>
     
+    <!-- ================= SEO 核心优化区 ================= -->
+    <title>约旦光环民宿 168 Aura Apartment | 安曼华人首选民宿</title>
+    <meta name="description" content="约旦安曼首选华人光环民宿 (168 Aura Apartment)。配备专属中国厨师，费用包含地道一日三餐。生活在约旦，自带光环。为您提供安全、舒适、便捷的安曼住宿与餐饮体验。">
+    <meta name="keywords" content="约旦民宿, 安曼民宿, 约旦华人旅馆, 约旦中餐, 安曼住宿, 约旦旅游, Jordan Homestay, Amman Apartment">
+    <meta name="author" content="168 Aura Apartment">
+    <!-- ================================================== -->
+
     <style>
         /* 1. 基础重置与极致黑底（最底层） */
         body, html {
@@ -44,7 +50,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.35); /* 稍微调低了一点遮罩浓度，让风景更通透 */
+            background: rgba(0, 0, 0, 0.35); 
             z-index: 2;
             pointer-events: none; 
         }
@@ -85,7 +91,7 @@
             font-weight: 600;
             margin-bottom: 20px;
             letter-spacing: 8px;
-            /* 核心黑科技：生成环绕文字的深色光晕 */
+            /* 生成环绕文字的深色光晕 */
             text-shadow: 0 2px 10px rgba(0,0,0,0.9), 
                          0 0 20px rgba(0,0,0,0.7), 
                          0 0 40px rgba(0,0,0,0.5);
@@ -114,7 +120,7 @@
             border-radius: 30px;
             letter-spacing: 2px;
             transition: all 0.3s ease;
-            background: rgba(0,0,0,0.6); /* 按钮本身加深一点底色，显得更高级 */
+            background: rgba(0,0,0,0.6); 
             font-size: 0.95rem;
             box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
@@ -291,7 +297,8 @@
     <!-- 核心文字区 -->
     <div class="content">
         <div class="slogan-box">
-            <div class="cn-slogan">生活在约旦，自带光环。</div>
+            <!-- SEO优化：使用 h1 标签，提高搜索引擎权重，保留 margin-top:0 确保排版不变 -->
+            <h1 class="cn-slogan" style="margin-top:0;">生活在约旦，自带光环。</h1>
             <div class="en-slogan">Living in Jordan, with an Aura.</div>
             <!-- 画册按钮完美融入视觉中心 -->
             <a href="gallery.html" target="_blank" class="gallery-btn">探索 168 AURA GALLERY</a>
@@ -341,7 +348,7 @@
                 [allImages[i], allImages[j]] = [allImages[j], allImages[i]];
             }
 
-            // 解锁全量播放：不再使用 .slice() 截断，全部 167 张图无限循环！
+            // 解锁全量播放：所有 167 张图无限循环！
             const images = allImages.map(num => `images/${num}.jpg`);
 
             const layer1 = document.getElementById('bg-layer-1');
@@ -423,5 +430,37 @@
             });
         }
     </script>
+    
+    <!-- ================= SEO：Schema.org 结构化数据 ================= -->
+    <!-- 这是递交给 Google 的电子名片，用户不可见，但能极大提升搜索排名 -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LodgingBusiness",
+      "name": "168 Aura Apartment | 约旦光环民宿",
+      "description": "位于约旦安曼的高品质华人首选民宿，提供中国厨师主理的一日三餐。",
+      "image": "https://168aura.com/images/1.jpg",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Amman",
+        "addressCountry": "JO"
+      },
+      "email": "168support@168aura.com",
+      "telephone": "+962-781511811",
+      "amenityFeature": [
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Chinese Chef / 中国厨师",
+          "value": "True"
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "3 Meals Included / 包含一日三餐",
+          "value": "True"
+        }
+      ]
+    }
+    </script>
+    <!-- ========================================================== -->
 </body>
 </html>
