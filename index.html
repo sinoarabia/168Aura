@@ -3,26 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>168光环民宿 | Aura Apartment</title>
+    <title>光环民宿 | Aura Apartment</title>
     
     <style>
+        /* 1. 基础重置与极致黑底（最底层） */
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
             font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
             overflow: hidden;
-            /* 哪怕图片没加载出来，也是高级的深色渐变，绝非死黑 */
-            background: radial-gradient(circle at center, #2c3e50 0%, #0f1419 100%); 
+            background-color: #050505; 
         }
 
+        /* 2. 轮播图层（1楼）：正数层级，绝对不会被 body 遮挡！ */
         .slideshow {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            z-index: -10;
+            z-index: 1; 
         }
 
         .bg-layer {
@@ -36,21 +37,22 @@
             background-repeat: no-repeat;
         }
 
-        /* 压暗遮罩 */
+        /* 3. 压暗遮罩（2楼）：让文字更清晰 */
         .overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.35);
-            z-index: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 2;
             pointer-events: none; 
         }
 
+        /* 4. 核心内容区（3楼） */
         .content {
             position: relative;
-            z-index: 1;
+            z-index: 3;
             height: 100%;
             display: flex;
             flex-direction: column;
@@ -61,7 +63,7 @@
         }
 
         .slogan-box {
-            background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 100%);
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.02) 100%);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             padding: 50px 90px;
@@ -84,7 +86,7 @@
             font-weight: 600;
             margin-bottom: 20px;
             letter-spacing: 8px;
-            text-shadow: 2px 4px 8px rgba(0,0,0,0.5);
+            text-shadow: 2px 4px 8px rgba(0,0,0,0.6);
         }
 
         .en-slogan {
@@ -96,15 +98,16 @@
             text-transform: uppercase;
         }
 
+        /* 5. 底部模块（3楼） */
         .footer {
             position: absolute;
-            bottom: 25px;
+            bottom: 30px;
             width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 15px;
-            z-index: 2;
+            z-index: 3;
         }
 
         .contact-email {
@@ -162,19 +165,19 @@
             text-align: center;
             color: #f8ca55; 
             text-shadow: 1px 1px 3px rgba(0,0,0,0.9);
-            line-height: 1.5;
+            line-height: 1.6;
             margin-top: 5px;
         }
         .lang-cn { font-weight: bold; font-size: 1.1rem; letter-spacing: 2px; }
         .lang-en { font-size: 0.85rem; letter-spacing: 1px; opacity: 0.9; }
         .lang-ar { font-size: 0.95rem; opacity: 0.9; font-family: Arial, sans-serif; margin-top: 2px;}
 
-        /* WhatsApp */
+        /* 6. WhatsApp 组件（4楼最高层，全面缩小优化） */
         .wa-widget {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            z-index: 999;
+            z-index: 4;
             display: flex;
             flex-direction: column;
             align-items: flex-end;
@@ -182,8 +185,8 @@
         }
         
         .wa-icon {
-            width: 60px;
-            height: 60px;
+            width: 50px; /* 电脑端从 60 缩小到 50 */
+            height: 50px;
             background: #25D366;
             border-radius: 50%;
             display: flex;
@@ -194,14 +197,14 @@
         }
         
         .wa-icon:hover { transform: scale(1.1); }
-        .wa-icon svg { width: 35px; height: 35px; fill: #fff; }
+        .wa-icon svg { width: 28px; height: 28px; fill: #fff; }
         
         .wa-tooltip {
             background: rgba(15, 20, 25, 0.95);
-            padding: 22px;
+            padding: 20px;
             border-radius: 12px;
-            margin-bottom: 18px;
-            width: 320px;
+            margin-bottom: 15px;
+            width: 290px;
             text-align: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.6);
             opacity: 0;
@@ -221,55 +224,61 @@
             pointer-events: auto;
         }
         
-        .wa-cn { font-weight: bold; color: #f8ca55; font-size: 0.95rem; line-height: 1.6; }
-        .wa-en { font-size: 0.82rem; color: #d0d0d0; line-height: 1.5; }
-        .wa-ar { font-size: 1rem; color: #fff; line-height: 1.6; font-family: Arial, sans-serif; }
+        .wa-cn { font-weight: bold; color: #f8ca55; font-size: 0.9rem; line-height: 1.6; }
+        .wa-en { font-size: 0.8rem; color: #d0d0d0; line-height: 1.5; }
+        .wa-ar { font-size: 0.95rem; color: #fff; line-height: 1.6; font-family: Arial, sans-serif; }
         
         .wa-divider {
-            width: 40px;
+            width: 30px;
             height: 1px;
             background: rgba(248, 202, 85, 0.4);
-            margin: 12px auto;
+            margin: 10px auto;
         }
 
-        /* 手机端适配 */
+        /* 7. 手机端极致排版适配（重点重构区） */
         @media (max-width: 768px) {
             .content { transform: translateY(-5vh); }
-            .slogan-box { padding: 40px 25px; }
-            .cn-slogan { font-size: 2.2rem; letter-spacing: 4px; }
-            .en-slogan { font-size: 1rem; }
+            /* 调整毛玻璃框，使其在手机上不拥挤 */
+            .slogan-box { padding: 35px 20px; width: 80%; max-width: 320px; }
             
-            .footer { bottom: 15px; gap: 12px; }
+            /* 口号缩小，防止折行显得杂乱 */
+            .cn-slogan { font-size: 1.8rem; letter-spacing: 4px; margin-bottom: 12px; }
+            .en-slogan { font-size: 0.8rem; letter-spacing: 2px; }
+            
+            /* 底部文字进一步收紧，保持精致单行呈现 */
+            .footer { bottom: 20px; gap: 10px; }
             .contact-email { font-size: 0.85rem; }
-            .gallery-btn { padding: 8px 25px; font-size: 0.8rem; }
-            .lang-cn { font-size: 0.95rem; }
-            .lang-en { font-size: 0.75rem; }
-            .lang-ar { font-size: 0.85rem; }
+            .gallery-btn { padding: 8px 22px; font-size: 0.8rem; }
             
-            .wa-widget { bottom: 20px; right: 20px; }
-            .wa-icon { width: 50px; height: 50px; }
-            .wa-icon svg { width: 28px; height: 28px; }
-            .wa-tooltip { width: 280px; padding: 18px; margin-bottom: 12px; }
-            .wa-cn { font-size: 0.9rem; }
+            .lang-cn { font-size: 0.9rem; }
+            .lang-en { font-size: 0.7rem; }
+            .lang-ar { font-size: 0.8rem; }
+            
+            /* 手机端 WhatsApp 终极防误触优化 */
+            .wa-widget { bottom: 20px; right: 15px; } /* 更加贴边，不挡中间文字 */
+            .wa-icon { width: 42px; height: 42px; } /* 大幅缩小 */
+            .wa-icon svg { width: 22px; height: 22px; }
+            
+            /* 手机端卡片适配 */
+            .wa-tooltip { width: 250px; padding: 15px; margin-bottom: 12px; }
+            .wa-cn { font-size: 0.85rem; }
             .wa-en { font-size: 0.75rem; }
-            .wa-ar { font-size: 0.95rem; }
+            .wa-ar { font-size: 0.85rem; }
         }
     </style>
 </head>
 <body>
-    <!-- 动态背景层 -->
+    <!-- 动态背景层 (1楼) -->
+    <!-- 暴力直出 1.jpg，同时移除所有负数 z-index，彻底消灭黑屏 -->
     <div class="slideshow">
-        <!-- 【最核心修改：暴力破解！】
-             这里直接将第一张图片写死在 HTML 里，并且透明度直接为1。
-             浏览器不用等任何 JS，哪怕是在 2G 网络下，一打开网页就会立刻加载 1.jpg！ -->
         <div id="bg-layer-1" class="bg-layer" style="background-image: url('images/1.jpg'); opacity: 1;"></div>
         <div id="bg-layer-2" class="bg-layer" style="opacity: 0;"></div>
     </div>
     
-    <!-- 全屏压暗遮罩 -->
+    <!-- 全屏压暗遮罩 (2楼) -->
     <div class="overlay"></div>
 
-    <!-- 核心文字区 -->
+    <!-- 核心文字区 (3楼) -->
     <div class="content">
         <div class="slogan-box">
             <div class="cn-slogan">生活在约旦，自带光环。</div>
@@ -277,7 +286,7 @@
         </div>
     </div>
 
-    <!-- 底部结构 -->
+    <!-- 底部结构 (3楼) -->
     <div class="footer">
         <div class="contact-email" onclick="copyEmail()">
             168support@168aura.com
@@ -293,7 +302,7 @@
         </div>
     </div>
 
-    <!-- WhatsApp -->
+    <!-- WhatsApp (4楼) -->
     <div class="wa-widget" onclick="handleWaClick(event)">
         <div id="wa-tooltip" class="wa-tooltip">
             <div class="wa-cn">约旦光环民宿，中国厨师做饭<br>费用包含一日三餐，点击了解详情。</div>
@@ -311,17 +320,18 @@
         document.addEventListener('DOMContentLoaded', () => {
             const totalGalleryImages = 168;
             let allImages = [];
-            // 因为第 1 张图已经在 HTML 里写死了，这里我们从第 2 张图开始随机抽选 15 张
+            // 从 2.jpg 开始取，因为 1.jpg 已经在 HTML 里写死了
             for (let i = 2; i <= totalGalleryImages; i++) {
                 allImages.push(i);
             }
 
-            // 洗牌打乱
+            // 洗牌打乱数组
             for (let i = allImages.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [allImages[i], allImages[j]] = [allImages[j], allImages[i]];
             }
 
+            // 抽取 15 张
             const images = allImages.slice(0, 15).map(num => `images/${num}.jpg`);
 
             const layer1 = document.getElementById('bg-layer-1');
@@ -329,13 +339,13 @@
             let isLayer1Active = true;
             let currentIndex = 0;
 
-            // 为了不在刚打开页面时闪烁，延迟 100 毫秒后再把动画属性加回去
+            // 延迟加载 CSS 过渡效果，避免第一下闪动
             setTimeout(() => {
                 layer1.style.transition = 'opacity 2.5s ease-in-out';
                 layer2.style.transition = 'opacity 2.5s ease-in-out';
             }, 100);
 
-            // 每 6 秒轮播一次
+            // 每 6 秒循环轮播
             setInterval(() => {
                 const nextImageUrl = images[currentIndex];
                 
@@ -356,7 +366,7 @@
                 img.src = nextImageUrl;
             }, 6000); 
 
-            // WhatsApp 交互逻辑
+            // WhatsApp 逻辑
             let waClickCount = 0;
             let waResetTimer;
 
@@ -388,7 +398,7 @@
             });
         });
 
-        // 邮箱复制逻辑
+        // 邮箱点击复制逻辑
         function copyEmail() {
             const email = "168support@168aura.com";
             navigator.clipboard.writeText(email).then(() => {
