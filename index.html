@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>168光环民宿 | Aura Apartment</title>
+    <title>光环民宿 | Aura Apartment</title>
     
     <style>
         /* 1. 基础重置与极致黑底（最底层） */
@@ -37,14 +37,14 @@
             background-repeat: no-repeat;
         }
 
-        /* 3. 压暗遮罩（2楼）：让文字更清晰 */
+        /* 3. 压暗遮罩（2楼）：稍微降低亮度，凸显风景的同时保证文字基础可读性 */
         .overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.35); /* 稍微调低了一点遮罩浓度，让风景更通透 */
             z-index: 2;
             pointer-events: none; 
         }
@@ -59,17 +59,12 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            transform: translateY(-5vh); /* 整体微调，适应按钮上移 */
+            transform: translateY(-5vh); 
         }
 
+        /* 去掉背景框，只保留悬浮动画和居中排版 */
         .slogan-box {
-            background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.02) 100%);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 55px 90px;
-            border-radius: 15px;
-            border: 1px solid rgba(248, 202, 85, 0.25);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255,255,255,0.05);
+            padding: 20px;
             animation: float 6s ease-in-out infinite;
             display: flex;
             flex-direction: column;
@@ -82,6 +77,7 @@
             100% { transform: translateY(0px); }
         }
 
+        /* 文字笔划光晕（Halo Effect）：利用多层黑色阴影包裹字体边缘 */
         .cn-slogan {
             font-family: 'Noto Serif SC', 'Songti SC', 'STSong', serif;
             font-size: 3.8rem;
@@ -89,8 +85,11 @@
             font-weight: 600;
             margin-bottom: 20px;
             letter-spacing: 8px;
-            text-shadow: 2px 4px 8px rgba(0,0,0,0.6);
-            white-space: nowrap; /* 强制单行，防折行破相 */
+            /* 核心黑科技：生成环绕文字的深色光晕 */
+            text-shadow: 0 2px 10px rgba(0,0,0,0.9), 
+                         0 0 20px rgba(0,0,0,0.7), 
+                         0 0 40px rgba(0,0,0,0.5);
+            white-space: nowrap; 
         }
 
         .en-slogan {
@@ -100,12 +99,14 @@
             letter-spacing: 4px;
             font-weight: 300;
             text-transform: uppercase;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.9), 
+                         0 0 15px rgba(0,0,0,0.7);
         }
 
-        /* 画册按钮（已移至口号下方） */
+        /* 画册按钮 */
         .gallery-btn {
             display: inline-block;
-            margin-top: 40px; /* 距离上方英文的间距 */
+            margin-top: 40px; 
             padding: 12px 35px;
             border: 1px solid #f8ca55;
             color: #f8ca55;
@@ -113,17 +114,17 @@
             border-radius: 30px;
             letter-spacing: 2px;
             transition: all 0.3s ease;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.6); /* 按钮本身加深一点底色，显得更高级 */
             font-size: 0.95rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
         .gallery-btn:hover {
-            background: rgba(248,202,85,0.25);
+            background: rgba(248,202,85,0.3);
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.7);
         }
 
-        /* 5. 底部模块（3楼）：精简版 */
+        /* 5. 底部模块（3楼） */
         .footer {
             position: absolute;
             bottom: 30px;
@@ -139,8 +140,8 @@
             color: #ffffff;
             font-size: 0.95rem;
             letter-spacing: 1.5px;
-            opacity: 0.8;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+            opacity: 0.9;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.9);
             cursor: pointer;
             position: relative;
             display: inline-block;
@@ -171,7 +172,7 @@
         .multi-lang-slogan {
             text-align: center;
             color: #f8ca55; 
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.9);
+            text-shadow: 0 2px 5px rgba(0,0,0,0.9), 0 0 10px rgba(0,0,0,0.7);
             line-height: 1.6;
             margin-top: 5px;
         }
@@ -182,8 +183,8 @@
         /* 6. WhatsApp 组件（右上角防误触） */
         .wa-widget {
             position: fixed;
-            top: 30px;   /* 改为顶部 */
-            right: 30px; /* 靠右 */
+            top: 30px;   
+            right: 30px; 
             z-index: 4;
             display: flex;
             flex-direction: column;
@@ -206,19 +207,19 @@
         .wa-icon:hover { transform: scale(1.1); }
         .wa-icon svg { width: 28px; height: 28px; fill: #fff; }
         
-        /* 提示卡片改为向下拉出 */
+        /* 向下拉出的提示卡片 */
         .wa-tooltip {
             background: rgba(15, 20, 25, 0.95);
             padding: 20px;
             border-radius: 12px;
-            margin-top: 15px; /* 距离上方图标的间距 */
+            margin-top: 15px; 
             width: 290px;
             text-align: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.6);
             opacity: 0;
             visibility: hidden;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform: translateY(-20px) scale(0.95); /* 从上往下的动画起始点 */
+            transform: translateY(-20px) scale(0.95); 
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(248, 202, 85, 0.3);
@@ -246,13 +247,7 @@
         /* 7. 手机端极致排版适配 */
         @media (max-width: 768px) {
             .content { transform: translateY(-4vh); }
-            .slogan-box { 
-                padding: 40px 15px; 
-                width: 88%; 
-                max-width: 400px; 
-            }
             
-            /* 弹性缩放：保证无论屏幕多宽，口号始终完美显示在一行 */
             .cn-slogan { 
                 font-size: clamp(1.4rem, 6.5vw, 2.2rem); 
                 letter-spacing: 2px; 
@@ -272,7 +267,6 @@
             .lang-en { font-size: 0.75rem; }
             .lang-ar { font-size: 0.85rem; }
             
-            /* 手机端 WhatsApp 放右上角 */
             .wa-widget { top: 20px; right: 15px; } 
             .wa-icon { width: 42px; height: 42px; } 
             .wa-icon svg { width: 22px; height: 22px; }
@@ -304,7 +298,7 @@
         </div>
     </div>
 
-    <!-- 底部结构 (更清爽) -->
+    <!-- 底部结构 -->
     <div class="footer">
         <div class="contact-email" onclick="copyEmail()">
             168support@168aura.com
@@ -320,7 +314,6 @@
 
     <!-- WhatsApp (右上角向下弹出) -->
     <div class="wa-widget" onclick="handleWaClick(event)">
-        <!-- HTML 结构调整：图标在上，提示框在下，保证动画顺滑拉出 -->
         <div class="wa-icon">
             <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.82.735 5.467 2.036 7.78L.47 29.53l5.908-1.55A15.906 15.906 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333c-2.437 0-4.75-.623-6.78-1.747l-.486-.27-5.04 1.323 1.34-4.912-.297-.472A13.25 13.25 0 012.667 16c0-7.353 5.98-13.333 13.333-13.333S29.333 8.647 29.333 16 23.353 29.333 16 29.333zm7.333-10.02c-.402-.202-2.383-1.177-2.752-1.312-.37-.135-.638-.202-.906.202-.268.404-1.04 1.31-1.274 1.58-.234.27-.47.304-.87.102-1.85-.92-3.23-1.884-4.524-3.664-.333-.46-.035-.71.166-.91.18-.18.402-.47.604-.706.202-.236.268-.403.402-.672.134-.27.067-.504-.034-.706-.102-.202-.906-2.186-1.24-2.994-.325-.783-.655-.677-.905-.69-.234-.012-.502-.012-.77-.012-.268 0-.704.101-1.072.504-.37.404-1.408 1.378-1.408 3.36 0 1.982 1.442 3.896 1.642 4.165.202.27 2.84 4.335 6.877 6.078 2.66 1.15 3.513 1.127 4.15 1.018.72-.124 2.383-.974 2.718-1.916.335-.943.335-1.75.234-1.917-.102-.17-.37-.272-.772-.473z"/></svg>
         </div>
@@ -337,26 +330,25 @@
         document.addEventListener('DOMContentLoaded', () => {
             const totalGalleryImages = 168;
             let allImages = [];
-            // 从 2.jpg 开始取
+            // 完整装入第 2 张到第 168 张图
             for (let i = 2; i <= totalGalleryImages; i++) {
                 allImages.push(i);
             }
 
-            // 洗牌打乱数组
+            // 洗牌算法：完全打乱顺序
             for (let i = allImages.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [allImages[i], allImages[j]] = [allImages[j], allImages[i]];
             }
 
-            // 抽取 15 张
-            const images = allImages.slice(0, 15).map(num => `images/${num}.jpg`);
+            // 解锁全量播放：不再使用 .slice() 截断，全部 167 张图无限循环！
+            const images = allImages.map(num => `images/${num}.jpg`);
 
             const layer1 = document.getElementById('bg-layer-1');
             const layer2 = document.getElementById('bg-layer-2');
             let isLayer1Active = true;
             let currentIndex = 0;
 
-            // 延迟加载 CSS 过渡效果，避免第一下闪动
             setTimeout(() => {
                 layer1.style.transition = 'opacity 2.5s ease-in-out';
                 layer2.style.transition = 'opacity 2.5s ease-in-out';
@@ -378,7 +370,7 @@
                         layer2.style.opacity = '0';
                     }
                     isLayer1Active = !isLayer1Active;
-                    currentIndex = (currentIndex + 1) % images.length;
+                    currentIndex = (currentIndex + 1) % images.length; // 无限循环
                 };
                 img.src = nextImageUrl;
             }, 6000); 
@@ -388,13 +380,12 @@
             let waResetTimer;
 
             window.handleWaClick = function(e) {
-                e.stopPropagation(); // 阻止事件冒泡到 document
+                e.stopPropagation(); 
                 waClickCount++;
                 const tooltip = document.getElementById('wa-tooltip');
 
                 if (waClickCount === 1) {
                     tooltip.classList.add('show');
-                    // 6秒内无操作自动缩回
                     waResetTimer = setTimeout(() => {
                         waClickCount = 0;
                         tooltip.classList.remove('show');
@@ -407,7 +398,6 @@
                 }
             };
             
-            // 点击屏幕空白处（非 wa-widget 区域），自动缩回提示框
             document.addEventListener('click', () => {
                 const tooltip = document.getElementById('wa-tooltip');
                 if (tooltip.classList.contains('show')) {
