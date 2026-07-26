@@ -5,22 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>光环民宿 | Aura Apartment</title>
     
-    <!-- 强制浏览器预下载5张顶级大图，确保零闪烁秒开 -->
-    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1585123334904-8452a641a47b?auto=format&fit=crop&w=1920&q=80">
-    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1541410965313-d53b3c16ef17?auto=format&fit=crop&w=1920&q=80">
-    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1507501336603-6e31db2be093?auto=format&fit=crop&w=1920&q=80">
-    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1621213442111-e1291b5825ac?auto=format&fit=crop&w=1920&q=80">
-    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1579705745811-a32bef7856a3?auto=format&fit=crop&w=1920&q=80">
-    
     <style>
-        /* 基础设置 */
+        /* 基础设置与高级暗色渐变底纹（防止图片加载失败时全黑） */
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             overflow: hidden;
-            background-color: #1a1a1a; 
+            background: radial-gradient(circle at center, #2c3e50 0%, #0f1419 100%); 
         }
 
         /* 绝对无瑕疵的图层叠加轮播系统 */
@@ -41,12 +34,12 @@
             animation: crossFade 30s infinite;
         }
 
-        /* 5张约旦风情图库 & 精确的时间差拨片 */
-        .slide-1 { background-image: url('https://images.unsplash.com/photo-1585123334904-8452a641a47b?auto=format&fit=crop&w=1920&q=80'); animation-delay: 0s; }
-        .slide-2 { background-image: url('https://images.unsplash.com/photo-1541410965313-d53b3c16ef17?auto=format&fit=crop&w=1920&q=80'); animation-delay: 6s; }
-        .slide-3 { background-image: url('https://images.unsplash.com/photo-1507501336603-6e31db2be093?auto=format&fit=crop&w=1920&q=80'); animation-delay: 12s; }
-        .slide-4 { background-image: url('https://images.unsplash.com/photo-1621213442111-e1291b5825ac?auto=format&fit=crop&w=1920&q=80'); animation-delay: 18s; }
-        .slide-5 { background-image: url('https://images.unsplash.com/photo-1579705745811-a32bef7856a3?auto=format&fit=crop&w=1920&q=80'); animation-delay: 24s; }
+        /* 调用你本地 images 文件夹里的前 5 张图作为轮播背景 */
+        .slide-1 { background-image: url('images/1.jpg'); animation-delay: 0s; }
+        .slide-2 { background-image: url('images/2.jpg'); animation-delay: 6s; }
+        .slide-3 { background-image: url('images/3.jpg'); animation-delay: 12s; }
+        .slide-4 { background-image: url('images/4.jpg'); animation-delay: 18s; }
+        .slide-5 { background-image: url('images/5.jpg'); animation-delay: 24s; }
 
         @keyframes crossFade {
             0%   { opacity: 0; }
@@ -56,7 +49,7 @@
             100% { opacity: 0; }
         }
 
-        /* 黑色半透明遮罩 */
+        /* 黑色半透明压暗遮罩，让文字更清晰 */
         .overlay {
             position: fixed;
             width: 100%;
@@ -111,19 +104,18 @@
             font-weight: 300;
         }
 
-        /* ================= 新版底部模块：绝对居中对齐 ================= */
+        /* 底部模块：绝对居中对齐 */
         .footer {
             position: absolute;
             bottom: 25px;
             width: 100%;
             display: flex;
-            flex-direction: column; /* 垂直排列 */
-            align-items: center;    /* 强制居中 */
-            gap: 15px;              /* 各元素之间的固定间距 */
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
             z-index: 2;
         }
 
-        /* 1. 邮箱样式 */
         .contact-email {
             color: #ffffff;
             font-size: 0.95rem;
@@ -132,7 +124,6 @@
             text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
         }
 
-        /* 2. 图集按钮样式 */
         .gallery-btn {
             display: inline-block;
             padding: 10px 30px;
@@ -151,7 +142,6 @@
             transform: translateY(-2px);
         }
 
-        /* 3. 三语品牌标语样式 */
         .multi-lang-slogan {
             text-align: center;
             color: #f8ca55; 
@@ -161,7 +151,6 @@
         }
         .lang-cn { font-weight: bold; font-size: 1.1rem; letter-spacing: 2px; }
         .lang-en { font-size: 0.85rem; letter-spacing: 1px; opacity: 0.9; }
-        /* dir="rtl" 确保阿拉伯语的标点符号位置绝对正确 */
         .lang-ar { font-size: 0.95rem; opacity: 0.9; font-family: Arial, sans-serif; margin-top: 2px;}
 
         /* 手机端屏幕完美适配 */
@@ -180,7 +169,7 @@
     </style>
 </head>
 <body>
-    <!-- 5层图片叠加无缝轮播 -->
+    <!-- 本地图片叠加无缝轮播 -->
     <div class="slideshow">
         <div class="slide slide-1"></div>
         <div class="slide slide-2"></div>
@@ -200,15 +189,12 @@
         </div>
     </div>
 
-    <!-- 全新底部结构 -->
+    <!-- 底部结构 -->
     <div class="footer">
-        <!-- 邮箱 -->
         <div class="contact-email">168support@168aura.com</div>
         
-        <!-- 图库入口按钮 -->
         <a href="gallery.html" class="gallery-btn">探索 168 AURA GALLERY</a>
         
-        <!-- 底部三语言品牌标示 -->
         <div class="multi-lang-slogan">
             <div class="lang-cn">168光环民宿，约旦首选。</div>
             <div class="lang-en">168 Aura Apartment, Your Premier Choice in Jordan.</div>
