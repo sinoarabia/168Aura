@@ -6,50 +6,38 @@
     <title>光环民宿 | Aura Apartment</title>
     
     <style>
-        /* 基础设置与高级暗色渐变底纹（防止图片加载失败时全黑） */
+        /* 基础设置与高级暗色渐变底纹 */
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             overflow: hidden;
-            background: radial-gradient(circle at center, #2c3e50 0%, #0f1419 100%); 
+            background: #0f1419; 
         }
 
-        /* 绝对无瑕疵的图层叠加轮播系统 */
+        /* 升级版 JS 控制的双图层交叉淡入淡出架构（解决16张图同时加载卡顿的问题） */
         .slideshow {
             position: fixed;
             width: 100%;
             height: 100%;
             z-index: -1;
+            background: #2c3e50;
         }
 
-        .slide {
+        .bg-layer {
             position: absolute;
             width: 100%;
             height: 100%;
             background-size: cover;
             background-position: center;
-            opacity: 0;
-            animation: crossFade 30s infinite;
+            transition: opacity 2s ease-in-out;
         }
 
-        /* 调用你本地 images 文件夹里的前 5 张图作为轮播背景 */
-        .slide-1 { background-image: url('images/1.jpg'); animation-delay: 0s; }
-        .slide-2 { background-image: url('images/2.jpg'); animation-delay: 6s; }
-        .slide-3 { background-image: url('images/3.jpg'); animation-delay: 12s; }
-        .slide-4 { background-image: url('images/4.jpg'); animation-delay: 18s; }
-        .slide-5 { background-image: url('images/5.jpg'); animation-delay: 24s; }
+        .bg-layer.hidden { opacity: 0; }
+        .bg-layer.visible { opacity: 1; }
 
-        @keyframes crossFade {
-            0%   { opacity: 0; }
-            6%   { opacity: 1; }
-            20%  { opacity: 1; }
-            26%  { opacity: 0; }
-            100% { opacity: 0; }
-        }
-
-        /* 黑色半透明压暗遮罩，让文字更清晰 */
+        /* 黑色半透明压暗遮罩 */
         .overlay {
             position: fixed;
             width: 100%;
@@ -116,13 +104,42 @@
             z-index: 2;
         }
 
+        /* 点击复制交互样式 */
         .contact-email {
             color: #ffffff;
             font-size: 0.95rem;
             letter-spacing: 1.5px;
             opacity: 0.8;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+            cursor: pointer;
+            position: relative;
+            display: inline-block;
+            transition: 0.3s;
         }
+        
+        .contact-email:hover {
+            color: #f8ca55;
+            opacity: 1;
+        }
+
+        .email-toast {
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #f8ca55;
+            color: #000;
+            padding: 4px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            white-space: nowrap;
+            font-weight: bold;
+        }
+
+        .email-toast.show { opacity: 1; }
 
         .gallery-btn {
             display: inline-block;
@@ -153,6 +170,62 @@
         .lang-en { font-size: 0.85rem; letter-spacing: 1px; opacity: 0.9; }
         .lang-ar { font-size: 0.95rem; opacity: 0.9; font-family: Arial, sans-serif; margin-top: 2px;}
 
+        /* WhatsApp 悬浮组件 */
+        .wa-widget {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            cursor: pointer;
+        }
+        
+        .wa-icon {
+            width: 60px;
+            height: 60px;
+            background: #25D366;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: transform 0.3s;
+        }
+        
+        .wa-icon:hover { transform: scale(1.1); }
+        .wa-icon svg { width: 35px; height: 35px; fill: #fff; }
+        
+        .wa-tooltip {
+            background: rgba(0,0,0,0.85);
+            color: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            width: 280px;
+            text-align: right;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            transform: translateY(10px);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.1);
+            pointer-events: none;
+        }
+        
+        .wa-tooltip.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        
+        .wa-tooltip p { margin: 6px 0; font-size: 0.85rem; line-height: 1.4; color: #eee; }
+        .wa-tooltip p.wa-cn { font-weight: bold; color: #f8ca55; font-size: 0.9rem; }
+        .wa-tooltip p.wa-ar { font-size: 1rem; }
+
         /* 手机端屏幕完美适配 */
         @media (max-width: 768px) {
             .slogan-box { padding: 40px 25px; }
@@ -165,17 +238,19 @@
             .lang-cn { font-size: 0.95rem; }
             .lang-en { font-size: 0.75rem; }
             .lang-ar { font-size: 0.85rem; }
+            
+            .wa-widget { bottom: 20px; right: 20px; }
+            .wa-icon { width: 50px; height: 50px; }
+            .wa-icon svg { width: 28px; height: 28px; }
+            .wa-tooltip { width: 240px; right: 0; padding: 12px; }
         }
     </style>
 </head>
 <body>
-    <!-- 本地图片叠加无缝轮播 -->
+    <!-- 动态背景层 -->
     <div class="slideshow">
-        <div class="slide slide-1"></div>
-        <div class="slide slide-2"></div>
-        <div class="slide slide-3"></div>
-        <div class="slide slide-4"></div>
-        <div class="slide slide-5"></div>
+        <div id="bg-layer-1" class="bg-layer visible"></div>
+        <div id="bg-layer-2" class="bg-layer hidden"></div>
     </div>
     
     <!-- 压暗遮罩 -->
@@ -191,9 +266,13 @@
 
     <!-- 底部结构 -->
     <div class="footer">
-        <div class="contact-email">168support@168aura.com</div>
+        <div class="contact-email" onclick="copyEmail()">
+            168support@168aura.com
+            <span id="email-toast" class="email-toast">点击复制 / Copy</span>
+        </div>
         
-        <a href="gallery.html" class="gallery-btn">探索 168 AURA GALLERY</a>
+        <!-- target="_blank" 确保新标签页打开 -->
+        <a href="gallery.html" target="_blank" class="gallery-btn">探索 168 AURA GALLERY</a>
         
         <div class="multi-lang-slogan">
             <div class="lang-cn">168光环民宿，约旦首选。</div>
@@ -202,5 +281,110 @@
         </div>
     </div>
 
+    <!-- WhatsApp 交互模块 -->
+    <div class="wa-widget" onclick="handleWaClick(event)">
+        <div id="wa-tooltip" class="wa-tooltip">
+            <p class="wa-cn">约旦光环民宿，中国厨师做饭，费用包含一日三餐，点击了解详情。</p>
+            <p>168 Aura Apartment, Chinese chef, 3 meals included. Click to learn more.</p>
+            <p class="wa-ar" dir="rtl">شقق أورا 168، طاهٍ صيني، الإقامة تشمل 3 وجبات يومياً. اضغط لمعرفة المزيد.</p>
+        </div>
+        <div class="wa-icon">
+            <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.82.735 5.467 2.036 7.78L.47 29.53l5.908-1.55A15.906 15.906 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333c-2.437 0-4.75-.623-6.78-1.747l-.486-.27-5.04 1.323 1.34-4.912-.297-.472A13.25 13.25 0 012.667 16c0-7.353 5.98-13.333 13.333-13.333S29.333 8.647 29.333 16 23.353 29.333 16 29.333zm7.333-10.02c-.402-.202-2.383-1.177-2.752-1.312-.37-.135-.638-.202-.906.202-.268.404-1.04 1.31-1.274 1.58-.234.27-.47.304-.87.102-1.85-.92-3.23-1.884-4.524-3.664-.333-.46-.035-.71.166-.91.18-.18.402-.47.604-.706.202-.236.268-.403.402-.672.134-.27.067-.504-.034-.706-.102-.202-.906-2.186-1.24-2.994-.325-.783-.655-.677-.905-.69-.234-.012-.502-.012-.77-.012-.268 0-.704.101-1.072.504-.37.404-1.408 1.378-1.408 3.36 0 1.982 1.442 3.896 1.642 4.165.202.27 2.84 4.335 6.877 6.078 2.66 1.15 3.513 1.127 4.15 1.018.72-.124 2.383-.974 2.718-1.916.335-.943.335-1.75.234-1.917-.102-.17-.37-.272-.772-.473z"/></svg>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. 16张背景图无缝滚动逻辑 ---
+        const totalImages = 16;
+        const images = [];
+        // 自动生成 images/1.jpg 到 images/16.jpg 的路径
+        for (let i = 1; i <= totalImages; i++) {
+            images.push(`images/${i}.jpg`);
+        }
+
+        let currentIndex = 0;
+        const layer1 = document.getElementById('bg-layer-1');
+        const layer2 = document.getElementById('bg-layer-2');
+        let isLayer1Active = true;
+
+        // 初始化第一张图
+        layer1.style.backgroundImage = `url('${images[0]}')`;
+
+        // 每隔 5 秒切换一次图片（交叉淡入淡出避免闪烁）
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % images.length;
+            const nextImage = `url('${images[currentIndex]}')`;
+
+            if (isLayer1Active) {
+                layer2.style.backgroundImage = nextImage;
+                layer2.classList.remove('hidden');
+                layer2.classList.add('visible');
+                layer1.classList.remove('visible');
+                layer1.classList.add('hidden');
+            } else {
+                layer1.style.backgroundImage = nextImage;
+                layer1.classList.remove('hidden');
+                layer1.classList.add('visible');
+                layer2.classList.remove('visible');
+                layer2.classList.add('hidden');
+            }
+            isLayer1Active = !isLayer1Active;
+        }, 5000);
+
+        // --- 2. 邮箱一键复制功能 ---
+        function copyEmail() {
+            const email = "168support@168aura.com";
+            navigator.clipboard.writeText(email).then(() => {
+                const toast = document.getElementById('email-toast');
+                toast.innerText = "已复制 / Copied!";
+                toast.classList.add('show');
+                // 2秒后恢复提示文字并隐藏
+                setTimeout(() => { 
+                    toast.classList.remove('show'); 
+                    setTimeout(() => toast.innerText = "点击复制 / Copy", 300);
+                }, 2000);
+            }).catch(err => {
+                console.error('复制失败', err);
+            });
+        }
+
+        // --- 3. WhatsApp 双击触发逻辑 ---
+        let waClickCount = 0;
+        let waResetTimer;
+
+        function handleWaClick(e) {
+            e.stopPropagation(); // 阻止事件冒泡
+            waClickCount++;
+            const tooltip = document.getElementById('wa-tooltip');
+
+            if (waClickCount === 1) {
+                // 点击第一下：展示三语气泡提示
+                tooltip.classList.add('show');
+                
+                // 如果用户 6 秒内没有点第二下，则自动重置状态收起气泡
+                waResetTimer = setTimeout(() => {
+                    waClickCount = 0;
+                    tooltip.classList.remove('show');
+                }, 6000);
+            } else if (waClickCount === 2) {
+                // 点击第二下：直接打开页面
+                clearTimeout(waResetTimer);
+                tooltip.classList.remove('show');
+                waClickCount = 0;
+                
+                // 【需修改此处】将 YOUR_PHONE_NUMBER 替换成实际号码，例如 9627xxxxxx
+                window.open('https://wa.me/962781511811', '_blank');
+            }
+        }
+        
+        // 点击屏幕空白处收起 WhatsApp 提示框
+        document.addEventListener('click', () => {
+            const tooltip = document.getElementById('wa-tooltip');
+            if (tooltip.classList.contains('show')) {
+                tooltip.classList.remove('show');
+                waClickCount = 0;
+            }
+        });
+    </script>
 </body>
 </html>
